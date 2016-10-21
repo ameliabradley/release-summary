@@ -1,0 +1,29 @@
+{
+  "name": "list-changes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "find-tickets.js",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "lodash": "^4.16.4",
+    "moment": "^2.15.1",
+    "node-env-file": "^0.1.8",
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leebradley/release-summary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leebradley/release-summary/issues"
+  },
+  "homepage": "https://github.com/leebradley/release-summary#readme"
+}

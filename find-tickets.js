@@ -8,6 +8,7 @@ const moment = require('moment');
 env(__dirname + '/.env');
 
 const MAX_PULL_REQUESTS_FETCH = 5;
+const MAX_COMMITS = 500;
 
 const BASE_URL = "https://api.github.com/repos/" + process.env.GITHUB_USER + "/" + process.env.GITHUB_REPO + "/pulls";
 const ACCESS_TOKEN = "&access_token=" + process.env.GITHUB_OAUTH_TOKEN; 
@@ -18,7 +19,7 @@ function buildUrl (strPath, oParams) {
 
 function getItem (strPath, oParams) {
 	const url = buildUrl(strPath, oParams);
-	//console.log("Fetching: ", url);
+	console.log("Fetching: ", url);
 	return rp({ uri : url, headers: { 'user-agent' : 'node.js' } })
 		.then(function (body) {
 			return JSON.parse(body);
@@ -40,7 +41,7 @@ getItem("", { state : 'closed', base : 'master' })
 		let pullRequestResultData = [];
 
 		const fetchPullRequestCommits = _.map(limitedPullRequests, function (pullRequest) {
-			return getItem("/" + pullRequest.number + "/commits", { })
+			return getItem("/" + pullRequest.number + "/commits", { per_page : MAX_COMMITS })
 				.then(function (pullRequestCommits) {
 					return {
 						data : pullRequest,
@@ -59,7 +60,7 @@ getItem("", { state : 'closed', base : 'master' })
 					let badCommits = [];
 					_.each(pr.commits, function (commit) {
 						const message = _.get(commit, 'commit.message');
-						const commitMatches = message.match(/[A-Za-z]+-[0-9]+/g) || [];
+						const commitMatches = message.match(/[a-z]+-[0-9]+/ig) || [];
 
 						if (commitMatches.length > 0) {
 							matches = matches.concat(commitMatches);
@@ -90,7 +91,13 @@ getItem("", { state : 'closed', base : 'master' })
 					if (badCommits.length > 0) {
 						console.log("Ticketless Commits: ");
 						_.each(badCommits, function (message) {
-							console.log("  -- ", message);
+							var parts = message.split("\n");
+							parts.unshift('');
+
+							var indented = parts.join("\n| ").slice(1);
+
+							console.log('');
+							console.log(indented);
 						});
 					}
 
