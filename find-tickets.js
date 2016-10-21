@@ -19,7 +19,7 @@ function buildUrl (strPath, oParams) {
 
 function getItem (strPath, oParams) {
 	const url = buildUrl(strPath, oParams);
-	console.log("Fetching: ", url);
+	//console.log("Fetching: ", url);
 	return rp({ uri : url, headers: { 'user-agent' : 'node.js' } })
 		.then(function (body) {
 			return JSON.parse(body);
@@ -90,14 +90,20 @@ getItem("", { state : 'closed', base : 'master' })
 
 					if (badCommits.length > 0) {
 						console.log("Ticketless Commits: ");
-						_.each(badCommits, function (message) {
+						_.each(badCommits, function (message, key) {
 							var parts = message.split("\n");
-							parts.unshift('');
+							var description = parts.splice(1);
+							description.unshift('');
 
-							var indented = parts.join("\n| ").slice(1);
+							var firstLine = parts[0];
+							var indented = description.join("\n  | ").slice(1);
 
 							console.log('');
-							console.log(indented);
+							console.log('  ' + (1 + key).toString() + ") " + firstLine);
+
+							if (description.length > 1) {
+								console.log(indented);
+							}
 						});
 					}
 
