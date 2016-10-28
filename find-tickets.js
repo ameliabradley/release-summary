@@ -18,7 +18,7 @@ function buildUrl (strPath, oParams) {
 }
 
 function getItem (strPath, oParams) {
-	const url = buildUrl(strPath, oParams);
+	const url = buildUrl(strPath, oParams || {});
 	//console.log("Fetching: ", url);
 	return rp({ uri : url, headers: { 'user-agent' : 'node.js' } })
 		.then(function (body) {
