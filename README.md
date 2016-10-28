@@ -24,10 +24,17 @@ You can generate yourself a `GITHUB_OATH_TOKEN` through this url: https://github
 
 # Usage
 
+## Fetch tickets related to latest releases
+
 Just fire away
 `node find-tickets.js`
 
-Output:
+The output displays the 5 latest releases and their associated tickets.
+
+Any commits that don't reference a ticket are displayed with the full name.
+
+Example:
+
 ```
 Fetching Pull Requests
 Pull Requests Fetched!
@@ -73,3 +80,13 @@ Ticketless Commits:
 
   1) 6.43.4
 ```
+
+## Fetch tickets associated with specific pull request
+
+Get the ID from the end of the target pull request. For example:
+```
+https://github.com/pigletwarlockfightas/mulberryjaminception.com/pull/3190
+```
+
+Run with the `--pr=` option:
+`node find-tickets.js --pr=3190`
