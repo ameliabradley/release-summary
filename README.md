@@ -83,10 +83,9 @@ Ticketless Commits:
 
 ## Fetch tickets associated with specific pull request
 
-Get the ID from the end of the target pull request. For example:
-```
-https://github.com/pigletwarlockfightas/mulberryjaminception.com/pull/3190
-```
+Get the ID from the end of the target pull request URL. For example, the URL `https://github.com/pigletwarlockfightas/mulberryjaminception.com/pull/3190` has the ID `3190`.
 
-Run with the `--pr=` option:
-`node find-tickets.js --pr=3190`
+Run `find-tickets.js` with the `--pr=` option.
+```
+node find-tickets.js --pr=3190
+```
