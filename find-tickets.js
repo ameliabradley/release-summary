@@ -75,7 +75,9 @@ function getStatusOfPullRequests (pullRequests) {
 				var aNum = parseInt(aParts[1]);
 				var bNum = parseInt(bParts[1]);
 
-				return aNum > bNum;
+				if (aNum < bNum) return -1;
+				if (aNum > bNum) return 1;
+				return 0;
 			}) : [];
 
 			console.log('Release: ', pr.data.title);
