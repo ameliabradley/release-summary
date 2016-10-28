@@ -8,6 +8,7 @@
     "lodash": "^4.16.4",
     "moment": "^2.15.1",
     "node-env-file": "^0.1.8",
+    "optimist": "^0.6.1",
     "request": "^2.75.0",
     "request-promise": "^4.1.1"
   },
