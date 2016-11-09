@@ -54,7 +54,7 @@ function getStatusOfPullRequests (pullRequests) {
 			let badCommits = [];
 			_.each(pr.commits, function (commit) {
 				const message = _.get(commit, 'commit.message');
-				const commitMatches = message.match(/[a-z]+-[0-9]+/ig) || [];
+				const commitMatches = _.toUpper(message).match(/[A-Z]+-[0-9]+/g) || [];
 
 				if (commitMatches.length > 0) {
 					matches = matches.concat(commitMatches);
