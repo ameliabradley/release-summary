@@ -9,7 +9,7 @@ const argv = require('optimist').argv;
 env(__dirname + '/.env');
 
 const MAX_PULL_REQUESTS_FETCH = 5;
-const MAX_COMMITS = 500;
+const MAX_COMMITS = 100;
 
 const BASE_URL = "https://api.github.com/repos/" + process.env.GITHUB_USER + "/" + process.env.GITHUB_REPO + "/pulls";
 const ACCESS_TOKEN = "&access_token=" + process.env.GITHUB_OAUTH_TOKEN; 
@@ -33,10 +33,22 @@ function getItem (strPath, oParams) {
 
 console.log("Fetching Pull Requests");
 
+function fetchAllCommits (pullRequest, page) {
+	return getItem("/" + pullRequest.number + "/commits", { per_page : MAX_COMMITS, page: page })
+		.then(function (pageCommits) {
+			if (pageCommits.length === MAX_COMMITS) {
+				return fetchAllCommits(pullRequest, page + 1).then(function (nextPageCommits) {
+					return pageCommits.concat(nextPageCommits);
+				});
+			} else {
+				return pageCommits;
+			}
+		});
+}
+
 function getStatusOfPullRequests (pullRequests) {
 	const fetchPullRequestCommits = _.map(pullRequests, function (pullRequest) {
-	return getItem("/" + pullRequest.number + "/commits", { per_page : MAX_COMMITS })
-		.then(function (pullRequestCommits) {
+		return fetchAllCommits(pullRequest, 1).then(function (pullRequestCommits) {
 			return {
 				data : pullRequest,
 				commits : pullRequestCommits,
